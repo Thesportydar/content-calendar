@@ -51,4 +51,8 @@ public class ContentCollectionRepository {
     public boolean existsById(Integer id) {
         return contentList.stream().anyMatch(c -> c.id().equals(id));
     }
+
+    public void deleteById(Integer id) {
+        contentList.removeIf(c -> c.id().equals(id));
+    }
 }

@@ -1,5 +1,6 @@
 package me.inaqui.content_calendar.controller;
 
+import jakarta.validation.Valid;
 import me.inaqui.content_calendar.model.Content;
 import me.inaqui.content_calendar.repository.ContentCollectionRepository;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class ContentController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public void create(@RequestBody Content content) {
+    public void create(@Valid @RequestBody Content content) {
         repository.save(content);
     }
 
@@ -43,5 +44,14 @@ public class ContentController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Content Not Found");
         }
         repository.save(content);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id) {
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Content Not Found");
+        }
+        repository.deleteById(id);
     }
 }
